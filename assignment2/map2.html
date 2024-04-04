@@ -90,7 +90,7 @@ function calcRadius(val) {
 return 0.9 * Math.pow(val/minValue, .7) * minRadius;
 } 
 
-var provinces = new L.geoJson(provinces, {style:style});
+var provinces = new L.geoJson(provinces, {style:style}).addTo(map);
 
 var coviddata = new L.geoJson(covidData, {
 onEachFeature : onEachFeature,
@@ -105,7 +105,7 @@ onEachFeature : onEachFeature,
  radius: calcRadius(feature.properties.covid / 5)
  });
  }
-}); 
+}).addTo(map); 
 
 var basemaps = {
  "Terrain": layer,
