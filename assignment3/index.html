@@ -26,17 +26,14 @@
 
 
             var bus = new L.geoJson(bus,{
-                onEachFeature : onEachFeature
-                // pointToLayer : function(feature, ll){
-                //     return L.circleMarker(ll, {
-                //     color: '#000000',
-                //     opacity: 1,
-                //     weight: 2,
-                //     fillColor: '#808080',
-                //     fillOpacity: .5,
-                //     //radius: 10
-                //     radius: calcRadius(feature.properties.covid)
-                //     }); 
+                onEachFeature : onEachFeature,
+                pointToLayer : function(feature, ll){
+                    var smallIcon = new L.Icon({
+                        iconSize: [27, 27],
+                        iconAnchor: [13, 27],
+                        popupAnchor:  [1, -24],
+                        iconUrl: 'clarkkovacs.github.io/assignment3/bus.jpg'
+                    }); }
             }).addTo(map);
             
             </script></body></html>
