@@ -1,1 +1,100 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+      <script src="bike_racks.js"></script>
+    <title>Assignment 4 | Clark Kovacs</title>
+    <style> html, body, #viewDiv {padding: 0; margin: 0; height: 100%; width: 100%;}
+</style>
+    <link rel="stylesheet"
+      href="https://js.arcgis.com/4.29/esri/themes/light/main.css" />
+    <script src="https://js.arcgis.com/4.29/"></script>
+    <script>
+        require(["esri/Map",
+                  "esri/layers/TileLayer",
+                  "esri/layers/GeoJSONLayer", 
+                  "esri/views/MapView",
+                  "esri/layers/FeatureLayer",
+                  "esri/widgets/Legend"], 
+                function(Map, TileLayer, GeoJSONLayer, MapView, FeatureLayer, Legend) {
 
+                  const renderer = {
+                    type: "simple",
+                    field: "CNTASSDVAL",
+                    legendOptions: {title: "Assignment 4 Symbols"},
+                    symbol: {
+                    type: "simple-marker",
+                    color: "red",
+                    outline: {
+                    color: "white"
+                    }
+                    },
+                    visualVariables: [
+                    {
+                    type: "size",
+                    field: "CNTASSDVAL",
+                    stops: [
+                    {
+                    value: 100000,
+                    size: "7px",
+                    label: "Low"
+                    },
+                    {
+                    value: 500000,
+                    size: "17px",
+                    label: "Medium"
+                    },
+                    {
+                    value: 1000000,
+                    size: "26px",
+                    label: "High"
+                    }
+                    ]}]
+                    };
+        const url = "https://rcshepard.github.io/downtownlincoln.geojson";
+        const geojsonLayer = new GeoJSONLayer({
+          url: url,
+          copyright: "Clark Kovacs - Copyright 2024",
+          renderer: renderer
+          });
+
+        const bikeRacksUrl = "https://clarkkovacs.github.io/assignment4/Bike_Rack.geojson"; // Replace with the actual URL or local data
+        const bikeRacksLayer = new GeoJSONLayer({
+          url: bikeRacksUrl
+        });
+
+        var thebasemap = new TileLayer({ url:"https://gisext.lincoln.ne.gov/arcgis/rest/services/GIS/LancoBasemap/MapServer/"});
+        var map = new Map({
+          layers: [thebasemap, geojsonLayer, bikeRacksLayer]
+          });
+        var view = new MapView({
+            container: "viewDiv",
+            map: map,
+            zoom: 16,
+            center: [-96.68, 40.81] // longitude, latitude – change this as needed
+          });
+
+          var featureLayer = new FeatureLayer({ url:
+            "https://gisext.lincoln.ne.gov/arcgis/rest/services/Parks/Park_Boundaries/MapServer/0"
+          });
+
+          map.add(featureLayer);
+          
+          const legend = new Legend({
+          view:view,
+          layerInfos: [{
+          layer: geojsonLayer,
+          title: "Legend"
+            }]
+          });
+
+          view.ui.add(legend, "bottom-right");
+
+        });
+ </script>
+  </head>
+  <body>
+    <div id="viewDiv"></div>
+  </body>
+</html>
