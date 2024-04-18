@@ -50,7 +50,24 @@
                     size: "26px",
                     label: "High"
                     }
-                    ]}]
+                    ]},
+                    { type:"size",
+                      field: "Bike Racks",
+                      stops: [
+                        {
+                        value: 0,
+                        size: "5px",
+                        label: "Bike Rack Location"
+                        }
+                      ]
+
+
+
+                    }
+                  
+                  
+                  
+                  ]
                     };
         const url = "https://rcshepard.github.io/downtownlincoln.geojson";
         const geojsonLayer = new GeoJSONLayer({
@@ -59,7 +76,7 @@
           renderer: renderer
           });
 
-        const bikeRacksUrl = "https://clarkkovacs.github.io/assignment4/Bike_Rack.geojson"; // Replace with the actual URL or local data
+        const bikeRacksUrl = "https://clarkkovacs.github.io/assignment4/Bike_Rack.geojson"; 
         const bikeRacksLayer = new GeoJSONLayer({
           url: bikeRacksUrl
         });
@@ -85,7 +102,7 @@
           view:view,
           layerInfos: [{
           layer: geojsonLayer,
-          title: "Legend"
+          title: "Assignment 4 Symbols"
             }]
           });
 
