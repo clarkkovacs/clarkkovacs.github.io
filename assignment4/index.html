@@ -50,23 +50,7 @@
                     size: "26px",
                     label: "High"
                     }
-                    ]},
-                    { type:"size",
-                      field: "Bike Racks",
-                      stops: [
-                        {
-                        value: 0,
-                        size: "5px",
-                        label: "Bike Rack Location"
-                        }
-                      ]
-
-
-
-                    }
-                  
-                  
-                  
+                    ]}
                   ]
                     };
         const url = "https://rcshepard.github.io/downtownlincoln.geojson";
@@ -89,7 +73,7 @@
             container: "viewDiv",
             map: map,
             zoom: 16,
-            center: [-96.68, 40.81] // longitude, latitude – change this as needed
+            center: [-96.68, 40.81] 
           });
 
           var featureLayer = new FeatureLayer({ url:
