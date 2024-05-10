@@ -42,7 +42,7 @@
         if (feature.properties) {
           var prop = feature.properties;
           // make a cool little html popup with properties
-            var popup = '<h3>'+prop['name'];
+            var popup = '<h3>'+prop['name'] + '<h4>' + prop['time'];
             // add known info about event to the description
           
           // you must create a layer property on each feature or else
@@ -132,17 +132,17 @@
         showResultFct: function(feature, container) {
           props = feature.properties;
           var name = L.DomUtil.create('b', null, container);
-          name.innerHTML = props.LNAME;
+          name.innerHTML = props.name;
           container.appendChild(L.DomUtil.create('br', null, container));
 
-          var cat = props.LNAME ? props.FNAME : props.OCCUPATION,
+          var cat = props.name ? props.name : props.time,
               info = cat;
           container.appendChild(document.createTextNode(info));
         }
       };
       var searchControl = L.control.fuseSearch(searchOptions);
       map.addControl(searchControl);
-      searchControl.indexFeatures(brinton, ['LNAME']);
+      searchControl.indexFeatures(brinton, ['name']);
 
       displayFeatures(brinton, searchLayer);
 
