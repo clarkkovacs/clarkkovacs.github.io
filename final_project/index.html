@@ -1,145 +1,242 @@
-<!DOCTYPE html>
 <html>
-    <head>
-    <title>Final Project: Indian Pollution Data</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" crossorigin />
-    <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js" crossorigin=""></script>    
-    <script src="https://dsps.lib.uiowa.edu/placing/public/leafletSlider-1.0.2/leaflet.SliderControl.min.js"></script>
-    <script src="https://dsps.lib.uiowa.edu/placing/public/fuse-1.2.1/fuse.min.js"></script>
-    <script src="https://dsps.lib.uiowa.edu/placing/public/leafletFuseSearch-noVersion/leafletfuse.js"></script>
-    <link rel="stylesheet" href="https://dsps.lib.uiowa.edu/placing/public/leafletFuseSearch-noVersion/leafletfuse.css" type="text/css"/>
-    <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" type="text/css">
-    <style>
-        html, body { margin: 0; padding: 0; height: 100%; }
-        #map { height: 100%; }
-    </style>
-    <!-- <script src="/Users/clark/Desktop/WebMapping/FinalProject/Indian_States.js"></script>
-    <script src="/Users/clark/Desktop/WebMapping/FinalProject/indian-cities.js"></script>
-    <script src="/Users/clark/Desktop/WebMapping/FinalProject/in.js"></script>
-    <script src="/Users/clark/Desktop/WebMapping/FinalProject/chronological.js"></script> -->
-
-     <script src="https://clarkkovacs.github.io/final_project/Indian_States.js"></script>
+  <head>
+    <title>Indian PM 2.5 Data 2015-2017</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+<script src="https://skeate.dev/Leaflet.timeline/examples/leaflet.timeline.js"></script>
+<script src="https://clarkkovacs.github.io/final_project/Indian_States.js"></script>
     <script src="https://clarkkovacs.github.io/final_project/indian-cities.js"></script>
     <script src="https://clarkkovacs.github.io/final_project/in.js"></script>
-    <script src="https://clarkkovacs.github.io/final_project/chronological.js"></script>
-</head>
-    </head>
 
-    <body>
-        <div id="map"></div>
-        <script type="text/javascript">
-    
-            var map = L.map('map', {
-                center: [20.5937, 78.9629],
-                zoom: 5
-            });
-    
-            L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/tonerlite/{z}/{x}/{y}{r}.{ext}', {
-                attribution: 'Map tiles by <a href="http://stamen.com">StamenDesign</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-                subdomains: 'abcd',
-                minZoom: 0,
-                maxZoom: 20,
-                ext: 'png'
-            }).addTo(map);
-    
-            var imagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-                attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
-            });
-    
-            var layer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Terrain_Base/MapServer/tile/{z}/{y}/{x}', {
-                attribution: 'Tiles &copy; Esri &mdash; Source: USGS, Esri, TANA, DeLorme, and NPS',
-                maxZoom: 13
-            }).addTo(map);
-    
-            function getColorForPM25(pm25) {
-                if (pm25 === null) return '#cccccc'; // Grey for no data
-                return pm25 > 250 ? '#800026' :
-                    pm25 > 150 ? '#BD0026' :
-                    pm25 > 100 ? '#E31A1C' :
-                    pm25 > 50 ? '#FC4E2A' :
-                    pm25 > 30 ? '#FD8D3C' :
-                    pm25 > 20 ? '#FEB24C' :
-                    pm25 > 10 ? '#FED976' :
-                    '#FFEDA0';
-            }
-    
-            function style_states(feature) {
-                return {
-                    fillColor: 'black',
-                    weight: 3,
-                    opacity: 1,
-                    color: 'black',
-                    fillOpacity: 0
-                };
-            }
-    
-            function style_cities(feature) {
-                return {
-                    fillColor: 'white',
-                    weight: 1,
-                    opacity: 1,
-                    color: 'black',
-                    fillOpacity: 0
-                };
-            }
-    
-            var city_shapes = new L.geoJson(city_shapes, { style: style_cities }).addTo(map);
-            var states = new L.geoJson(states, { style: style_states }).addTo(map);
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        width: 100vw;
+        height: 100vh;
+      }
+      .leaflet-bottom.leaflet-left {
+        width: 100%;
+      }
+      .leaflet-control-container .leaflet-timeline-controls {
+        box-sizing: border-box;
+        width: 100%;
+        margin: 0;
+        margin-bottom: 15px;
+      }
+      .legend {
+    line-height: 18px;
+    color: #555;
+    background: white;
+    }
+    .legend i {
+        width: 18px;
+        height: 18px;
+        float: left;
+        margin-right: 8px;
+        opacity: 0.7;
+    }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
 
-            // Convert dates to a consistent format (ISO 8601)
-            chrono.forEach(function(feature) {
-                var dateParts = feature.properties.Date.split('/');
-                var formattedDate = '20' + dateParts[2] + '-' + ('0' + dateParts[0]).slice(-2) + '-' + ('0' + dateParts[1]).slice(-2);
-                feature.properties.Date = formattedDate;
-            });
-
-
-            var onEachFeature = function (feature, layer) {
-            if (feature.properties) {
-                var popupContent = '<h3>' + feature.properties.City + '</h3>' +
-                    '<p>Date: ' + feature.properties.Date + '<br>NO: ' +
-                    (feature.properties["NO"] === null ? "Data not available" : feature.properties["NO"]) + '</p>';
-                layer.bindPopup(popupContent, { maxWidth: "auto" });
-            }
-        };
-
-        var timelineLayer = L.geoJson(chrono, {
-            onEachFeature: onEachFeature,
-            pointToLayer: function (feature, latlng) {
-                return L.circleMarker(latlng, {
-                    radius: feature.properties["NO"] === null ? 4 : Math.sqrt(feature.properties["NO"]) * 10,
-                    color: getColorForPM25(feature.properties["NO"]),
-                    fillColor: getColorForPM25(feature.properties["NO"]),
-                    fillOpacity: 1
-                });
-            }
+    <script>
+          var map = L.map('map', {
+            center: [20.5937, 78.9629],
+            zoom: 5,
+            zoomControl: false
         });
 
-        var sliderControl = L.control.sliderControl({
-            position: "bottomleft",
-            layer: timelineLayer,
-            timeAttribute: 'Date',
-            range: false,
-            follow: true // ensures the slider updates the map view to the current time point
+        var gray = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
+            maxZoom: 16
         });
 
-        map.addControl(sliderControl);
-        sliderControl.startSlider(); // initialize
+        var roads = L.tileLayer('https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png', {
+            maxZoom: 20,
+            attribution: '<a href="https://github.com/cyclosm/cyclosm-cartocss-style/releases" title="CyclOSM - Open Bicycle render">CyclOSM</a> | Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
 
-        var baseMaps = {
-            "Terrain": layer,
-            "Satellite": imagery
+        var terrain = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Terrain_Base/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Tiles &copy; Esri &mdash; Source: USGS, Esri, TANA, DeLorme, and NPS',
+            maxZoom: 13
+        });
+
+        function getColorForPM25(pm25) {
+            if (pm25 === null) return '#cccccc'; // Grey for no data
+            return pm25 > 250 ? '#800026' :
+                pm25 > 150 ? '#BD0026' :
+                pm25 > 100 ? '#E31A1C' :
+                pm25 > 50 ? '#FC4E2A' :
+                pm25 > 30 ? '#FD8D3C' :
+                pm25 > 20 ? '#FEB24C' :
+                pm25 > 10 ? '#FED976' :
+                '#FFEDA0';
+        }
+
+        function style_states(feature) {
+            return {
+                fillColor: 'black',
+                weight: 3,
+                opacity: 1,
+                color: 'black',
+                fillOpacity: 0
+            };
+        }
+
+        function style_cities(feature) {
+            return {
+                fillColor: 'white',
+                weight: 1,
+                opacity: 1,
+                color: 'black',
+                fillOpacity: 0
+            };
+        }
+
+        var city_shapes = new L.geoJson(city_shapes, { style: style_cities });
+        var states = new L.geoJson(states, { style: style_states });
+      var timeline;
+      var timelineControl;
+
+      var baseMaps = {
+                "Roads": roads,
+                "Gray": gray,
+                "Terrain": terrain
+            };
+
+            var overlayMaps = {
+                "States": states,
+                "City Shapes": city_shapes
+            };
+
+            L.control.layers(baseMaps, overlayMaps, { collapsed: false, position : 'topleft' }).addTo(map);
+
+            // Create custom panes with specific z-index values
+          map.createPane('circlesPane');
+          map.createPane('popUpPane')
+          map.getPane('circlesPane').style.zIndex = 650; 
+          map.getPane('popUpPane').style.zIndex = 800;
+
+      var minValue = 1
+      var minRadius = 5
+
+      function calcRadius(val) {
+        return 1.0083 * Math.pow(val/minValue,0.5716)*minRadius;
+        }
+
+
+      function onLoadData(data) {
+        var getInterval = function (data) {
+          return {
+            start: data.properties.start,
+            end: data.properties.end,
+          };
         };
 
-        var overlayMaps = {
-            "States": states,
-            "City Shapes": city_shapes
+        function getColorForPM25(pm25) {
+    if (pm25 === null) return '#cccccc'; // Grey for no data
+    return pm25 > 250 ? '#7E0023' :       // Maroon (Hazardous)
+           pm25 > 150 ? '#660099' :       // Purple (Very Unhealthy)
+           pm25 > 55  ? '#FF0000' :       // Red (Unhealthy)
+           pm25 > 35  ? '#FF7E00' :       // Orange (Unhealthy for Sensitive Individuals)
+           pm25 > 12  ? '#FFFF00' :       // Yellow (Moderate)
+                        '#00E400';        // Green (Good)
+}
+
+        var timelineControl = L.timelineSliderControl({
+          formatOutput: function (date) {
+          // Convert Unix time (seconds) to milliseconds and create a Date object
+          var d = new Date(date * 1000);
+          // Format the date string without the timezone information
+          return d.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            timeZone: 'UTC' // Use 'UTC' to prevent local timezone conversion
+          });
+        },
+          duration: 150000
+        });
+
+        function calculateAdjustedRadius(value) {
+            // Step 1: Calculate the initial radius using the square root of the value
+            let initialRadius = Math.sqrt(value);
+
+            // Step 2: Apply Flannery's Compensation factor
+            let adjustedRadius = initialRadius * 1.196 * Math.pow(initialRadius, 0.57);
+
+            return adjustedRadius;
+        }
+
+        var timeline = L.timeline(data, {
+        getInterval: getInterval,
+        pointToLayer: function (data, latlng) {
+            var radius = data.properties["PM2.5"] / 2;
+            var circle = L.circleMarker(latlng, {
+                stroke: 1,
+                radius: radius,
+                color: getColorForPM25(data.properties["PM2.5"]),
+                fillColor: getColorForPM25(data.properties["PM2.5"]),
+                fillOpacity: 0.5,
+                weight: 0.25,
+                pane: 'circlesPane' 
+            });
+
+            circle.bindTooltip('<h3>' + data.properties.City + '</h3>',  {pane: 'popUpPane'});
+            return circle;
+        },
+    });
+
+    
+
+    
+        timelineControl.addTo(map);
+        timelineControl.addTimelines(timeline);
+        timeline.addTo(map);
+        timelineControl.addTimelines(timeline);
+      }
+
+       
+      
+
+
+        // Create a legend control
+        var legend = L.control({ position: 'topright' });
+        
+
+        legend.onAdd = function (map) {
+            var div = L.DomUtil.create('div', 'info legend');
+            var grades = [0, 12, 35, 55, 150, 250];
+            var labels = [
+                'Good (0-12)',
+                'Moderate (12-35)',
+                'Unhealthy for Sensitive Individuals (35-55)',
+                'Unhealthy (55-150)',
+                'Very Unhealthy (150-250)',
+                'Hazardous (>250)'
+            ];
+            var colors = ['#00E400', '#FFFF00', '#FF7E00', '#FF0000', '#660099', '#7E0023'];
+
+            // Loop through the grades and create a label with a colored square for each interval
+            for (var i = 0; i < grades.length; i++) {
+                div.innerHTML +=
+                    '<i style="background:' + colors[i] + '"></i> ' +
+                    labels[i] + '<br>';
+            }
+
+            return div;
         };
 
-        L.control.layers(baseMaps, overlayMaps, { collapsed: false }).addTo(map);
+        legend.addTo(map);
 
+       
     </script>
-</body>
+    <script src="https://clarkkovacs.github.io/final_project/chronological_test.jsonp"></script> 
+  </body>
 </html>
